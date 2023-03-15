@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import { Link, useParams } from "react-router-dom";
 import Perks from "../Perks";
 import axios from "axios";
@@ -41,7 +41,28 @@ const PlacesPage = () => {
     });
     setBooking({ photolink: " " });
   };
-  console.log(addedphotos);
+  // console.log(addedphotos);
+
+  const uploadPhoto = (event)=>{
+    const files = event.target.files;
+    console.log(files) //returns the array of uploaded file. first index value consists the uploaded file data. Here after we store the file into 
+    // formData function
+    const data = new FormData();
+    for (let i=0; i<files.length; i++){
+      data.append('photos', files[i])
+    }
+   
+    // console.log(data)
+     axios.post('http://localhost:4001/api/upload', data, {
+      headers: {"Content-Type": "multipart/form-data"}
+    }).then(response =>{
+      const {data: filenames} = response;
+      setAddedphotos(prev => {
+        return [...prev, ...filenames]
+      })
+    })
+  }
+
   return (
     <div>
       {action !== "new" && (
@@ -54,13 +75,13 @@ const PlacesPage = () => {
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              stroke-width="1.5"
+              strokeWidth="1.5"
               stroke="currentColor"
-              class="w-6 h-6"
+              className="w-6 h-6"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 d="M12 6v12m6-6H6"
               />
             </svg>
@@ -107,24 +128,24 @@ const PlacesPage = () => {
             <div className="mt-2 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2">
               {addedphotos.length > 0 &&
                 addedphotos.map((link) => {
-                  return <div>
-                    <img src={'http://localhost:4001/uploads/'+ link} alt={"Image of House"} className="rounded-2xl w-60 h-40"/>
-                    {link}
+                  return <div key={link}>
+                    <img src={'http://localhost:4001/uploads/'+ link} alt={"House"} className="rounded-2xl w-32 h-24"/>
+                   
                     </div>;
                 })}
-              <label className="border flex py-8 px-10 rounded-xl justify-between items-center">
-                <input type="file" className="hidden"/>
+              <label className="border cursor-pointer flex py-8 px-10 rounded-xl justify-between items-center">
+                <input type="file" className="hidden" onChange={uploadPhoto}/>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
-                  stroke-width="1.5"
+                  strokeWidth="1.5"
                   stroke="currentColor"
-                  class="w-6 h-8"
+                  className="w-6 h-8"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"
                   />
                 </svg>
@@ -142,7 +163,7 @@ const PlacesPage = () => {
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
               <Perks
                 selected={perks}
-                onChange={(e) => setPerks(e.target.value)}
+                onChange={setPerks}
               />
             </div>
             <h2 className=" text-xl mt-2">Extra Info</h2>
