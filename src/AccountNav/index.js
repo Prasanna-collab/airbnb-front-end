@@ -1,18 +1,15 @@
-import React, { useContext, useState } from "react";
-import { Link, Navigate, useParams } from "react-router-dom";
-import { UsersContext } from "../UserContext";
-import axios from "axios";
-import PlacesPage from "../PlacesPage";
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
 
-const AccountPage = () => {
-  const { user, ready, setUser } = useContext(UsersContext);
-  const [redirect, setRedirect] = useState(null);
-  let { subpage } = useParams();
-
-  if (subpage === undefined) {
-    subpage = "profile";
-  }
+const AccountNav = () => {
+  const { pathname } = useLocation();
+  //   console.log(pathname);
   const classesFunc = (type = null) => {
+    let subpage = pathname.split("/")?.[2];
+    // console.log(subpage);
+    if (subpage === undefined) {
+      subpage = "profile";
+    }
     let classes = "px-6 py-2 inline-flex gap-2 rounded-full ";
     if (type === subpage) {
       classes += " bg-primary text-white ";
@@ -21,25 +18,8 @@ const AccountPage = () => {
     }
     return classes;
   };
-
-  if (!user && ready && !redirect) {
-    return <Navigate to={"/login"} />;
-  }
-  if (!ready) {
-    return "Loading...";
-  }
-  const handleLogout = () => {
-    axios.post("http://localhost:4001/api/logout");
-    setRedirect("/");
-    setUser(null);
-  };
-  if (redirect) {
-    return <Navigate to={redirect} />;
-  }
-
   return (
-    <div>
-      <h1>Account Page for {user.name} </h1>
+    <>
       <nav className="flex mt-6 gap-6 w-full  justify-center">
         <Link className={classesFunc("profile")} to="/account">
           <svg
@@ -93,26 +73,8 @@ const AccountPage = () => {
           My Accomodations
         </Link>
       </nav>
-      {subpage === "profile" && (
-        <div className="text-center my-6 mx-auto max-w-lg">
-          <h1 className="mb-4">
-            Logged in as {user.name} ({user.email})
-          </h1>
-          <button
-            onClick={handleLogout}
-            className="primary max-w-sm px-6 py-2 "
-          >
-            Log out
-          </button>
-        </div>
-      )}
-      {subpage === "places" && (
-        <div className="my-6">
-          <PlacesPage />
-        </div>
-      )}
-    </div>
+    </>
   );
 };
 
-export default AccountPage;
+export default AccountNav;
