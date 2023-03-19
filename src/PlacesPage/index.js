@@ -6,9 +6,9 @@ import axios from "axios";
 const PlacesPage = () => {
   const [places, setPlaces] = useState([]);
   useEffect(() => {
-    axios.get("http://localhost:4001/api/places").then(({ data }) => {
+    axios.get("http://localhost:4001/api/user-places").then(({ data }) => {
       setPlaces(data);
-      console.log(data);
+      // console.log(data);
     });
   }, []);
 
@@ -40,24 +40,28 @@ const PlacesPage = () => {
           Add new place
         </Link>
       </div>
-      <div className="mt-4">
+      <div className="mt-4 gap-2 flex flex-col  h-auto">
         {places.length > 0 &&
           places.map((place) => {
             return (
-              <div
-                className="bg-gray-200 rounded-2xl p-4 flex gap-4"
+              <Link to={"/account/places/"+ place._id}
+                className="bg-gray-100 p-4 flex gap-4 rounded-2xl "
                 key={place.id}
               >
-                <img
-                  src={"http://localhost:4001/uploads/" + place.addedphotos[0]}
-                  alt="Profile"
-                  className="w-32 h-32 rounded-xl grow shrink-0"
-                />
-                <div className="shrink grow-0 ">
-                  <h1 className="">{place.title}</h1>
-                  <h1>{place.description}</h1>
+                <div className="grow shrink-0" >
+                {place.addedphotos.length>0 && 
+                 <img
+                 src={"http://localhost:4001/uploads/" + place.addedphotos[0]}
+                 alt="Profile"
+                 className="w-32 h-24 rounded-xl"
+               />
+                }
                 </div>
-              </div>
+                <div className="shrink grow-0">
+                  <h1 className="">{place.title}</h1>
+                  <p className="text-sm mt-2">{place.description}</p>
+                </div>
+              </Link>
             );
           })}
       </div>

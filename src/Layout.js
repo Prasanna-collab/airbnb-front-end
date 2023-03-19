@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom'
 import Header from './Header'
 const Layout = () => {
   return (
-    <div className='p-4 flex flex-col min-height-screen'>
+    <div className='py-4 px-8 flex flex-col min-height-screen'>
         <Header/>
         <Outlet/>
     </div>

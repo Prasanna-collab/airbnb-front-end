@@ -9,6 +9,7 @@ import axios from 'axios';
 import ProfilePage from "./ProfilePage";
 import PlacesPage from "./PlacesPage";
 import PlacesFormPage from "./PlacesFormPage";
+import PlacePage from "./PlacePage";
 axios.defaults.withCredentials = true;
 function App() {
   return (
@@ -22,6 +23,8 @@ function App() {
             <Route path="/account" element={<ProfilePage/>} />
             <Route path="/account/places" element={<PlacesPage/>} />
             <Route path="/account/places/new" element={<PlacesFormPage/>}/>
+            <Route path="/account/places/:id" element={<PlacesFormPage/>}/>
+            <Route path='/place/:id' element={<PlacePage/>}/>
           </Route>
         </Routes>
       </UserContextProvider>
