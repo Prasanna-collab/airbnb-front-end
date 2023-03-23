@@ -103,6 +103,11 @@ function PlacePage() {
             </div>
           )}
         </div>
+        <div className="mt-2">
+          <h3 className="font-semibold">Description</h3>
+          {place.description}
+          
+        </div>
       </div>
     </>
   );
