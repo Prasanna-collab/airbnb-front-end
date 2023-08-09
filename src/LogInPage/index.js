@@ -33,7 +33,6 @@ const {setUser} = useContext(UsersContext)
       
       setAllow(true);
       
-  
     } catch (error) {
       alert("Login failed. Check your credentials.");
     }
